@@ -25,6 +25,10 @@ const routes = [
     path:'/address',
     name:'address',
     component:()=> import('../views/Address.vue')
+  },{
+    path:'/city',
+    name:'city',
+    component:()=> import('../views/City.vue')
   }
 ]
 

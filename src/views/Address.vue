@@ -3,15 +3,23 @@
     <Header title="选择收货地址" :isLeft="isLeft"></Header>
      <div class="city_search">
       <div class="search">
-        <span class="city" >
+        <span class="city" @click="$router.push('/city')">
           {{city}}
           <i class="fa fa-angle-down"></i>
         </span>
         <i class="fa fa-search"></i>
         <input type="text" v-model="search_val" placeholder="小区/写字楼/学校等">
       </div>
+      <Location :address="address"></Location>
     </div>
-    <Location :address="address"></Location>
+    <div class="area">
+      <ul class="area_list" v-for="(item,index) in areaList" :key="index">
+        <li @click="selectAddress(item)">
+          <h4>{{item.name}}</h4>
+          <p>{{item.district}}{{item.address}}</p>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -23,7 +31,8 @@ export default {
     data(){
       return {
         isLeft:true,
-        search_val:''
+        search_val:'',
+        areaList:[]
       }
     },
     computed:{
@@ -32,9 +41,36 @@ export default {
         },
       address(){
             return this.$store.getters.address
-        }
+        },
     },
-    components:{Header,Location}
+    watch:{
+      search_val(){
+        this.getPlace()
+      }
+    },
+    components:{Header,Location},
+    methods:{
+      selectAddress(item){
+        this.$store.dispatch('setAddress',item.district + item.address + item.name)
+        this.$router.push("/home")
+      },
+      getPlace(){
+        const self = this;
+        AMap.plugin('AMap.Autocomplete', function(){
+          // 实例化Autocomplete
+          var autoOptions = {
+            //city 限定城市，默认全国
+            city: self.city
+          }
+          var autoComplete= new AMap.Autocomplete(autoOptions);
+          autoComplete.search(self.search_val, function(status, result) {
+            // 搜索成功时，result即是对应的匹配数据
+            // console.log(result);
+            self.areaList = result.tips
+          })
+})
+      }
+    }
 }
 </script>
 
