@@ -3,10 +3,34 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import axios from 'axios';
+import MintUI from 'mint-ui';
+import 'mint-ui/lib/style.css';
+import { Indicator } from 'mint-ui';
 
 Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;
 axios.defaults.baseURL = '/api'
+Vue.use(MintUI)
+
+// 请求拦截
+axios.interceptors.request.use(config=>{
+  Indicator.open();
+  return config
+},
+error =>{
+  return Promise.reject(error)
+  // console.log(error);
+})
+
+// 响应拦截
+axios.interceptors.response.use(response=>{
+  Indicator.close();
+  return response
+},
+error =>{
+  return Promise.reject(error)
+  // console.log(error);
+})
 
 new Vue({
   router,
