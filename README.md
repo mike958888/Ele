@@ -1,29 +1,18 @@
-# ele-app
+# Ele-app
 
-## Project setup
+## 后端代码启动
 ```
 npm install
+
+npm run server
 ```
 
-### Compiles and hot-reloads for development
+
+## 前端代码启动 
 ```
+cd client
+
+npm install 
+
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
